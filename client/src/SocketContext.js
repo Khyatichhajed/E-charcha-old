@@ -7,16 +7,17 @@ const socket=io('http://localhost:5000');
 const ContextProvider=({children})=>{
     const [callAccepted,setCallAccepted]=useState(false);
     const [callEnded,setCallEnded]=useState(false);
-    const[stream,setStream]=useState();
+    const[stream,setStream]=useState(null);
     const[name,setName]=useState('');
     const[call,setCall]=useState({});
-    const[me,setMe]=useState('');
+    const[me,setMe]=useState(null);
     const myVideo=useRef();
     const userVideo=useRef();
     const connectionRef=useRef();
 
     useEffect(()=>{
         navigator.mediaDevices.getUserMedia({video:true,audio:true}).then((currentStream)=>{
+            setStream(currentStream);
             myVideo.current.srcObject=currentStream;
         });
         socket.on('me',(id)=>setMe(id));
